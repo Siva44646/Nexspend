@@ -42,7 +42,7 @@ export default function Dashboard() {
       <h2 className="text-3xl font-bold tracking-tight">Overview</h2>
       
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        <Card className="bg-gradient-to-br from-blue-500 to-indigo-600 text-white border-none shadow-lg">
+        <Card className="min-w-0 bg-gradient-to-br from-blue-500 to-indigo-600 text-white border-none shadow-lg">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium opacity-90">Total Money</CardTitle>
             <DollarSign className="h-4 w-4 opacity-75" />
@@ -55,7 +55,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
         
-        <Card className="bg-white dark:bg-zinc-900 border-none shadow-md">
+        <Card className="min-w-0 bg-white dark:bg-zinc-900 border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-zinc-500">Remaining Money</CardTitle>
             <Wallet className="h-4 w-4 text-emerald-500" />
@@ -68,7 +68,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-zinc-900 border-none shadow-md">
+        <Card className="min-w-0 bg-white dark:bg-zinc-900 border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-zinc-500">Total Expenses</CardTitle>
             <ArrowUpRight className="h-4 w-4 text-red-500" />
@@ -81,7 +81,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <Card className="bg-white dark:bg-zinc-900 border-none shadow-md">
+        <Card className="min-w-0 bg-white dark:bg-zinc-900 border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-zinc-500">Money Accounts</CardTitle>
             <Building className="h-4 w-4 text-blue-500" />
@@ -137,7 +137,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <div className="md:col-span-2 lg:col-span-3">
+        <div className="min-w-0 md:col-span-2 lg:col-span-3">
           <Card className="min-w-0 border-none shadow-md">
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>

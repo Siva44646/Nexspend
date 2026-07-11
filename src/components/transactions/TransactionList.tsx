@@ -164,7 +164,7 @@ export function TransactionList({ accountId }: TransactionListProps) {
                   onClick={() => setSelectedTx(tx)}
                   className="flex items-center justify-between p-4 rounded-xl border bg-card text-card-foreground hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:shadow-md transition-all cursor-pointer group"
                 >
-                  <div className="flex items-center gap-4 min-w-0">
+                  <div className="flex items-center gap-4 min-w-0 flex-1">
                     <div className={`p-2.5 rounded-xl ${
                       isIncome && tx.type !== 'transfer' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' :
                       isExpense && tx.type !== 'transfer' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
