@@ -94,7 +94,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="md:col-span-2 lg:col-span-4 border-none shadow-md bg-white dark:bg-zinc-900/50">
+        <Card className="min-w-0 md:col-span-2 lg:col-span-4 border-none shadow-md bg-white dark:bg-zinc-900/50">
           <CardHeader>
             <CardTitle>Money Accounts</CardTitle>
             <CardDescription>Your current balances across all wallets</CardDescription>
@@ -138,7 +138,7 @@ export default function Dashboard() {
         </Card>
 
         <div className="md:col-span-2 lg:col-span-3">
-          <Card className="border-none shadow-md">
+          <Card className="min-w-0 border-none shadow-md">
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>
               <CardDescription>Your full transaction history</CardDescription>

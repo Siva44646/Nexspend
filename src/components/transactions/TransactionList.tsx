@@ -96,8 +96,8 @@ export function TransactionList({ accountId }: TransactionListProps) {
 
   return (
     <div className="space-y-4">
-      <div className="flex flex-col sm:flex-row gap-4 items-center bg-card p-4 rounded-xl border shadow-sm">
-        <div className="relative flex-1 w-full">
+      <div className="flex flex-col sm:flex-row flex-wrap gap-4 items-center bg-card p-4 rounded-xl border shadow-sm w-full">
+        <div className="relative flex-1 w-full min-w-[200px]">
           <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
           <Input 
             placeholder="Search transactions..." 
@@ -187,7 +187,7 @@ export function TransactionList({ accountId }: TransactionListProps) {
                       </p>
                     </div>
                   </div>
-                  <div className={`font-bold text-lg ${
+                  <div className={`font-bold text-lg shrink-0 ${
                     isIncome && tx.type !== 'transfer' ? 'text-emerald-500' :
                     isExpense && tx.type !== 'transfer' ? 'text-red-500' :
                     isIncome ? 'text-emerald-500' : 'text-red-500'

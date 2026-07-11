@@ -225,15 +225,15 @@ export default function Accounts() {
           accounts?.map((account) => {
             const TypeIcon = ACCOUNT_TYPES.find(t => t.value === account.type)?.icon || Wallet
             return (
-              <Card key={account.id} className="relative overflow-hidden group hover:shadow-lg transition-all">
+              <Card key={account.id} className="min-w-0 relative overflow-hidden group hover:shadow-lg transition-all">
                 <div 
                   className="absolute top-0 left-0 w-1 h-full" 
                   style={{ backgroundColor: account.color || '#3b82f6' }}
                 />
-                <CardHeader className="flex flex-row items-start justify-between pb-2">
-                  <div className="space-y-1">
-                    <CardTitle className="text-xl font-bold">{account.name}</CardTitle>
-                    <CardDescription className="capitalize flex items-center gap-1">
+                <CardHeader className="flex flex-row items-start justify-between pb-2 gap-2 min-w-0">
+                  <div className="space-y-1 min-w-0 flex-1">
+                    <CardTitle className="text-xl font-bold truncate" title={account.name}>{account.name}</CardTitle>
+                    <CardDescription className="capitalize flex items-center gap-1 truncate">
                       <TypeIcon className="w-3 h-3" />
                       {account.type.replace('_', ' ')}
                     </CardDescription>

@@ -146,13 +146,13 @@ export default function Budgets() {
             const isDanger = percentage >= 100
 
             return (
-              <Card key={budget.id} className="border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl relative overflow-hidden">
+              <Card key={budget.id} className="min-w-0 border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl relative overflow-hidden">
                 <div className={`absolute top-0 left-0 w-1 h-full ${isDanger ? 'bg-red-500' : isWarning ? 'bg-amber-500' : 'bg-emerald-500'}`} />
-                <CardHeader className="pb-2">
-                  <div className="flex items-center justify-between">
-                    <CardTitle className="text-xl flex items-center gap-2">
-                      <Target className="h-5 w-5 text-blue-500" />
-                      {budget.categories?.name || 'Overall Budget'}
+                <CardHeader className="pb-2 min-w-0">
+                  <div className="flex items-center justify-between gap-2 min-w-0">
+                    <CardTitle className="text-xl flex items-center gap-2 min-w-0">
+                      <Target className="h-5 w-5 text-blue-500 shrink-0" />
+                      <span className="truncate" title={budget.categories?.name || 'Overall Budget'}>{budget.categories?.name || 'Overall Budget'}</span>
                     </CardTitle>
                     <Button variant="ghost" size="icon" className="text-muted-foreground hover:text-destructive" onClick={() => {
                       if(confirm('Delete budget?')) deleteMutation.mutate(budget.id)

@@ -100,7 +100,7 @@ export default function Analytics() {
       </div>
 
       <div className="grid gap-6 md:grid-cols-2">
-        <Card className="border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl">
+        <Card className="min-w-0 border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Money Distribution</CardTitle>
             <CardDescription>Current balance across all accounts</CardDescription>
@@ -137,7 +137,7 @@ export default function Analytics() {
           </CardContent>
         </Card>
 
-        <Card className="border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl">
+        <Card className="min-w-0 border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Expense by Money Account</CardTitle>
             <CardDescription>Total spent from each wallet</CardDescription>
@@ -156,7 +156,7 @@ export default function Analytics() {
           </CardContent>
         </Card>
 
-        <Card className="md:col-span-2 border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl">
+        <Card className="min-w-0 md:col-span-2 border-none shadow-md bg-white/50 dark:bg-zinc-900/50 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Monthly Spending per Account</CardTitle>
             <CardDescription>Track which accounts you use the most over time</CardDescription>

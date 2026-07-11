@@ -137,9 +137,9 @@ export function TransactionModal({ transaction, isOpen, onClose }: TransactionMo
                   <div className="font-medium">{transaction.categories?.name || 'Uncategorized'}</div>
                 </div>
               )}
-              <div className="col-span-2">
+              <div className="col-span-2 min-w-0">
                 <Label className="text-muted-foreground">Notes</Label>
-                <div className="font-medium">{transaction.notes || 'No notes provided.'}</div>
+                <div className="font-medium break-words">{transaction.notes || 'No notes provided.'}</div>
               </div>
             </div>
             <div className="flex gap-2 pt-4">

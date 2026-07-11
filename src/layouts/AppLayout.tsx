@@ -145,7 +145,7 @@ export default function AppLayout() {
             </Button>
           </Link>
         </header>
-        <main className="flex-1 overflow-auto p-6">
+        <main className="flex-1 overflow-x-hidden overflow-y-auto p-4 md:p-6 w-full">
           <Outlet />
         </main>
       </div>
