@@ -1,9 +1,9 @@
 import { useState } from 'react'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { getAccounts, createAccount, deleteAccount } from '@/api/accounts'
+import { getAccounts, createAccount, deleteAccount, updateAccount } from '@/api/accounts'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { Button } from '@/components/ui/button'
-import { Plus, Wallet, Landmark, CreditCard, Building, Trash2 } from 'lucide-react'
+import { Plus, Wallet, Landmark, CreditCard, Building, Trash2, Edit } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -35,6 +35,7 @@ export default function Accounts() {
     balance: '',
     color: '#3b82f6',
   })
+  const [editingId, setEditingId] = useState<string | null>(null)
 
   const { data: accounts, isLoading } = useQuery({
     queryKey: ['accounts'],
@@ -54,6 +55,20 @@ export default function Accounts() {
     }
   })
 
+  const updateMutation = useMutation({
+    mutationFn: updateAccount,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['accounts'] })
+      setIsOpen(false)
+      setEditingId(null)
+      setNewAccount({ name: '', type: 'bank', balance: '', color: '#3b82f6' })
+      toast({ title: 'Success', description: 'Account updated successfully' })
+    },
+    onError: (error: any) => {
+      toast({ title: 'Error', description: error.message, variant: 'destructive' })
+    }
+  })
+
   const deleteMutation = useMutation({
     mutationFn: deleteAccount,
     onSuccess: () => {
@@ -67,14 +82,44 @@ export default function Accounts() {
 
   const handleCreate = (e: React.FormEvent) => {
     e.preventDefault()
-    createMutation.mutate({
-      name: newAccount.name,
-      type: newAccount.type,
-      balance: Number(newAccount.balance) || 0,
-      color: newAccount.color,
-      icon: newAccount.type, // simplified for now
-      description: null,
+    if (editingId) {
+      updateMutation.mutate({
+        id: editingId,
+        name: newAccount.name,
+        type: newAccount.type,
+        balance: Number(newAccount.balance) || 0,
+        color: newAccount.color,
+        icon: newAccount.type,
+      })
+    } else {
+      createMutation.mutate({
+        name: newAccount.name,
+        type: newAccount.type,
+        balance: Number(newAccount.balance) || 0,
+        color: newAccount.color,
+        icon: newAccount.type,
+        description: null,
+      })
+    }
+  }
+
+  const openEditDialog = (account: any) => {
+    setEditingId(account.id)
+    setNewAccount({
+      name: account.name,
+      type: account.type,
+      balance: account.balance.toString(),
+      color: account.color || '#3b82f6',
     })
+    setIsOpen(true)
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    setIsOpen(open)
+    if (!open) {
+      setEditingId(null)
+      setNewAccount({ name: '', type: 'bank', balance: '', color: '#3b82f6' })
+    }
   }
 
   const getTotalBalance = () => {
@@ -88,7 +133,7 @@ export default function Accounts() {
           <h2 className="text-3xl font-bold tracking-tight">Accounts</h2>
           <p className="text-muted-foreground">Manage your money sources here.</p>
         </div>
-        <Dialog open={isOpen} onOpenChange={setIsOpen}>
+        <Dialog open={isOpen} onOpenChange={handleOpenChange}>
           <DialogTrigger asChild>
             <Button className="bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white shadow-lg">
               <Plus className="mr-2 h-4 w-4" /> Add Account
@@ -96,8 +141,8 @@ export default function Accounts() {
           </DialogTrigger>
           <DialogContent>
             <DialogHeader>
-              <DialogTitle>Add New Account</DialogTitle>
-              <DialogDescription>Create a new account to track your money.</DialogDescription>
+              <DialogTitle>{editingId ? 'Edit Account' : 'Add New Account'}</DialogTitle>
+              <DialogDescription>{editingId ? 'Update your account details.' : 'Create a new account to track your money.'}</DialogDescription>
             </DialogHeader>
             <form onSubmit={handleCreate} className="space-y-4 pt-4">
               <div className="space-y-2">
@@ -149,8 +194,8 @@ export default function Accounts() {
                   ))}
                 </div>
               </div>
-              <Button type="submit" className="w-full mt-4" disabled={createMutation.isPending}>
-                {createMutation.isPending ? 'Creating...' : 'Create Account'}
+              <Button type="submit" className="w-full mt-4" disabled={createMutation.isPending || updateMutation.isPending}>
+                {createMutation.isPending || updateMutation.isPending ? 'Saving...' : editingId ? 'Update Account' : 'Create Account'}
               </Button>
             </form>
           </DialogContent>
@@ -160,7 +205,7 @@ export default function Accounts() {
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="col-span-1 md:col-span-3 bg-gradient-to-br from-blue-500 to-indigo-600 text-white border-none shadow-xl">
           <CardHeader>
-            <CardTitle className="text-sm font-medium opacity-90">Net Worth</CardTitle>
+            <CardTitle className="text-sm font-medium opacity-90">Total Money</CardTitle>
           </CardHeader>
           <CardContent>
             <div className="text-4xl font-bold">
@@ -193,18 +238,28 @@ export default function Accounts() {
                       {account.type.replace('_', ' ')}
                     </CardDescription>
                   </div>
-                  <Button 
-                    variant="ghost" 
-                    size="icon" 
-                    className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
-                    onClick={() => {
-                      if (confirm('Are you sure you want to delete this account?')) {
-                        deleteMutation.mutate(account.id)
-                      }
-                    }}
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </Button>
+                  <div className="flex items-center gap-2">
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-blue-500 hover:text-blue-600 hover:bg-blue-500/10"
+                      onClick={() => openEditDialog(account)}
+                    >
+                      <Edit className="w-4 h-4" />
+                    </Button>
+                    <Button 
+                      variant="ghost" 
+                      size="icon" 
+                      className="opacity-0 group-hover:opacity-100 transition-opacity text-destructive hover:text-destructive hover:bg-destructive/10"
+                      onClick={() => {
+                        if (confirm('Are you sure you want to delete this account?')) {
+                          deleteMutation.mutate(account.id)
+                        }
+                      }}
+                    >
+                      <Trash2 className="w-4 h-4" />
+                    </Button>
+                  </div>
                 </CardHeader>
                 <CardContent>
                   <div className="text-2xl font-bold">

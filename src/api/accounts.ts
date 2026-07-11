@@ -23,9 +23,12 @@ export async function getAccounts() {
 }
 
 export async function createAccount(account: Omit<Account, 'id' | 'user_id' | 'created_at'>) {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('User not authenticated')
+
   const { data, error } = await supabase
     .from('accounts')
-    .insert([account])
+    .insert([{ ...account, user_id: user.id }])
     .select()
     .single()
     

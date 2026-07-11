@@ -24,9 +24,12 @@ export async function getBudgets() {
 }
 
 export async function createBudget(budget: Omit<Budget, 'id' | 'user_id' | 'created_at' | 'categories'>) {
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('User not authenticated')
+
   const { data, error } = await supabase
     .from('budgets')
-    .insert([budget])
+    .insert([{ ...budget, user_id: user.id }])
     .select()
     .single()
     

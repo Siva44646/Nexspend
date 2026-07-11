@@ -37,13 +37,12 @@ export async function getTransactions() {
 }
 
 export async function createTransaction(transaction: Omit<Transaction, 'id' | 'user_id' | 'created_at' | 'accounts' | 'categories' | 'transfer_to_account'>) {
-  // We need to use RPC or let the client do 2 calls to update balance.
-  // Actually, wait, updating the balance via a trigger is much better, but since I didn't write a trigger for that in the SQL schema (I only wrote tables and RLS),
-  // we must update the account balance here in the API call for now.
-  
+  const { data: { user } } = await supabase.auth.getUser()
+  if (!user) throw new Error('User not authenticated')
+
   const { data: newTx, error: txError } = await supabase
     .from('transactions')
-    .insert([transaction])
+    .insert([{ ...transaction, user_id: user.id }])
     .select()
     .single()
     
@@ -106,4 +105,55 @@ export async function deleteTransaction(transaction: Transaction) {
       await supabase.from('accounts').update({ balance: Number(accTo.balance) - Number(transaction.amount) }).eq('id', transaction.transfer_to_account_id)
     }
   }
+}
+
+export async function updateTransaction(transaction: Partial<Transaction> & { id: string }) {
+  // To keep it simple, we could reverse the old transaction and apply the new one.
+  // First, fetch the old transaction
+  const { data: oldTx, error: fetchError } = await supabase
+    .from('transactions')
+    .select('*')
+    .eq('id', transaction.id)
+    .single()
+    
+  if (fetchError) throw fetchError
+
+  // Revert old transaction balances
+  if (oldTx.type === 'expense') {
+    const { data: acc } = await supabase.from('accounts').select('balance').eq('id', oldTx.account_id).single()
+    if (acc) await supabase.from('accounts').update({ balance: Number(acc.balance) + Number(oldTx.amount) }).eq('id', oldTx.account_id)
+  } else if (oldTx.type === 'income') {
+    const { data: acc } = await supabase.from('accounts').select('balance').eq('id', oldTx.account_id).single()
+    if (acc) await supabase.from('accounts').update({ balance: Number(acc.balance) - Number(oldTx.amount) }).eq('id', oldTx.account_id)
+  } else if (oldTx.type === 'transfer' && oldTx.transfer_to_account_id) {
+    const { data: accFrom } = await supabase.from('accounts').select('balance').eq('id', oldTx.account_id).single()
+    if (accFrom) await supabase.from('accounts').update({ balance: Number(accFrom.balance) + Number(oldTx.amount) }).eq('id', oldTx.account_id)
+    const { data: accTo } = await supabase.from('accounts').select('balance').eq('id', oldTx.transfer_to_account_id).single()
+    if (accTo) await supabase.from('accounts').update({ balance: Number(accTo.balance) - Number(oldTx.amount) }).eq('id', oldTx.transfer_to_account_id)
+  }
+
+  const { data: newTx, error: txError } = await supabase
+    .from('transactions')
+    .update(transaction)
+    .eq('id', transaction.id)
+    .select()
+    .single()
+    
+  if (txError) throw txError
+  
+  // Apply new transaction balances
+  if (newTx.type === 'expense') {
+    const { data: acc } = await supabase.from('accounts').select('balance').eq('id', newTx.account_id).single()
+    if (acc) await supabase.from('accounts').update({ balance: Number(acc.balance) - Number(newTx.amount) }).eq('id', newTx.account_id)
+  } else if (newTx.type === 'income') {
+    const { data: acc } = await supabase.from('accounts').select('balance').eq('id', newTx.account_id).single()
+    if (acc) await supabase.from('accounts').update({ balance: Number(acc.balance) + Number(newTx.amount) }).eq('id', newTx.account_id)
+  } else if (newTx.type === 'transfer' && newTx.transfer_to_account_id) {
+    const { data: accFrom } = await supabase.from('accounts').select('balance').eq('id', newTx.account_id).single()
+    if (accFrom) await supabase.from('accounts').update({ balance: Number(accFrom.balance) - Number(newTx.amount) }).eq('id', newTx.account_id)
+    const { data: accTo } = await supabase.from('accounts').select('balance').eq('id', newTx.transfer_to_account_id).single()
+    if (accTo) await supabase.from('accounts').update({ balance: Number(accTo.balance) + Number(newTx.amount) }).eq('id', newTx.transfer_to_account_id)
+  }
+
+  return newTx as Transaction
 }
