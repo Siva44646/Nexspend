@@ -139,7 +139,7 @@ export default function Accounts() {
               <Plus className="mr-2 h-4 w-4" /> Add Account
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-[95vw] sm:max-w-[425px] rounded-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>{editingId ? 'Edit Account' : 'Add New Account'}</DialogTitle>
               <DialogDescription>{editingId ? 'Update your account details.' : 'Create a new account to track your money.'}</DialogDescription>
@@ -194,7 +194,7 @@ export default function Accounts() {
                   ))}
                 </div>
               </div>
-              <Button type="submit" className="w-full mt-4" disabled={createMutation.isPending || updateMutation.isPending}>
+              <Button type="submit" className="w-full py-6 text-base" disabled={createMutation.isPending || updateMutation.isPending}>
                 {createMutation.isPending || updateMutation.isPending ? 'Saving...' : editingId ? 'Update Account' : 'Create Account'}
               </Button>
             </form>

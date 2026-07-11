@@ -88,7 +88,7 @@ export default function Budgets() {
               <Plus className="mr-2 h-4 w-4" /> Create Budget
             </Button>
           </DialogTrigger>
-          <DialogContent>
+          <DialogContent className="w-[95vw] sm:max-w-[425px] rounded-2xl max-h-[90vh] overflow-y-auto">
             <DialogHeader>
               <DialogTitle>Create Budget</DialogTitle>
             </DialogHeader>
@@ -122,8 +122,8 @@ export default function Budgets() {
                 </Select>
               </div>
 
-              <Button type="submit" className="w-full" disabled={createMutation.isPending}>
-                {createMutation.isPending ? 'Saving...' : 'Save Budget'}
+              <Button type="submit" className="w-full py-6 text-base" disabled={createMutation.isPending}>
+                {createMutation.isPending ? 'Creating...' : 'Create Budget'}
               </Button>
             </form>
           </DialogContent>

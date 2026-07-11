@@ -92,7 +92,7 @@ export function TransactionModal({ transaction, isOpen, onClose }: TransactionMo
 
   return (
     <Dialog open={isOpen} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="sm:max-w-[425px]">
+      <DialogContent className="w-[95vw] sm:max-w-[425px] rounded-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>Transaction Details</DialogTitle>
           <DialogDescription>
@@ -143,8 +143,8 @@ export function TransactionModal({ transaction, isOpen, onClose }: TransactionMo
               </div>
             </div>
             <div className="flex gap-2 pt-4">
-              <Button className="flex-1" variant="outline" onClick={() => setIsEditing(true)}>Edit</Button>
-              <Button className="flex-1" variant="destructive" onClick={() => {
+              <Button className="flex-1 py-6 text-base" variant="outline" onClick={() => setIsEditing(true)}>Edit</Button>
+              <Button className="flex-1 py-6 text-base" variant="destructive" onClick={() => {
                 if (confirm('Are you sure you want to delete this transaction?')) {
                   deleteMutation.mutate(transaction)
                 }
@@ -199,8 +199,8 @@ export function TransactionModal({ transaction, isOpen, onClose }: TransactionMo
               <Input value={editForm.notes} onChange={e => setEditForm({...editForm, notes: e.target.value})} placeholder="Optional notes" />
             </div>
             <div className="flex gap-2 pt-2">
-              <Button type="button" variant="outline" className="flex-1" onClick={() => setIsEditing(false)}>Cancel</Button>
-              <Button type="submit" className="flex-1" disabled={updateMutation.isPending}>
+              <Button type="button" variant="outline" className="flex-1 py-6 text-base" onClick={() => setIsEditing(false)}>Cancel</Button>
+              <Button type="submit" className="flex-1 py-6 text-base" disabled={updateMutation.isPending}>
                 {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
               </Button>
             </div>

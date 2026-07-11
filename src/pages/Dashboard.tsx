@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query'
 import { getAccounts } from '@/api/accounts'
 import { getTransactions } from '@/api/transactions'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
-import { DollarSign, ArrowDownRight, Wallet, Landmark, CreditCard, Building } from "lucide-react"
+import { DollarSign, ArrowUpRight, Wallet, Landmark, CreditCard, Building } from "lucide-react"
 import { Progress } from "@/components/ui/progress"
 import { Link } from 'react-router-dom'
 import { TransactionList } from '@/components/transactions/TransactionList'
@@ -71,7 +71,7 @@ export default function Dashboard() {
         <Card className="bg-white dark:bg-zinc-900 border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-zinc-500">Total Expenses</CardTitle>
-            <ArrowDownRight className="h-4 w-4 text-red-500" />
+            <ArrowUpRight className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-500">
@@ -94,7 +94,7 @@ export default function Dashboard() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-        <Card className="col-span-4 border-none shadow-md bg-white dark:bg-zinc-900/50">
+        <Card className="md:col-span-2 lg:col-span-4 border-none shadow-md bg-white dark:bg-zinc-900/50">
           <CardHeader>
             <CardTitle>Money Accounts</CardTitle>
             <CardDescription>Your current balances across all wallets</CardDescription>
@@ -137,7 +137,7 @@ export default function Dashboard() {
           </CardContent>
         </Card>
 
-        <div className="col-span-3">
+        <div className="md:col-span-2 lg:col-span-3">
           <Card className="border-none shadow-md">
             <CardHeader>
               <CardTitle>Recent Activity</CardTitle>

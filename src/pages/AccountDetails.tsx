@@ -4,7 +4,7 @@ import { getAccounts } from '@/api/accounts'
 import { getTransactions } from '@/api/transactions'
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
 import { TransactionList } from '@/components/transactions/TransactionList'
-import { ChevronLeft, Wallet, Landmark, CreditCard, Building, ArrowUpRight, ArrowDownRight, Activity } from 'lucide-react'
+import { ChevronLeft, Wallet, Landmark, CreditCard, Building, ArrowDownLeft, ArrowUpRight, Activity } from 'lucide-react'
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, LineChart, Line } from 'recharts'
 import { format, subMonths, startOfMonth } from 'date-fns'
 
@@ -110,7 +110,7 @@ export default function AccountDetails() {
         <Card className="border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-zinc-500">Total In</CardTitle>
-            <ArrowUpRight className="h-4 w-4 text-emerald-500" />
+            <ArrowDownLeft className="h-4 w-4 text-emerald-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-emerald-500">
@@ -123,7 +123,7 @@ export default function AccountDetails() {
         <Card className="border-none shadow-md">
           <CardHeader className="flex flex-row items-center justify-between pb-2">
             <CardTitle className="text-sm font-medium text-zinc-500">Total Out</CardTitle>
-            <ArrowDownRight className="h-4 w-4 text-red-500" />
+            <ArrowUpRight className="h-4 w-4 text-red-500" />
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-red-500">

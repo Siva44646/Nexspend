@@ -5,7 +5,7 @@ import { getCategories } from '@/api/categories'
 import { Input } from '@/components/ui/input'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from '@/components/ui/button'
-import { Search, ArrowUpRight, ArrowDownRight, ArrowRightLeft, ChevronLeft, ChevronRight } from 'lucide-react'
+import { Search, ArrowDownLeft, ArrowUpRight, ArrowRightLeft, ChevronLeft, ChevronRight } from 'lucide-react'
 import { TransactionModal } from './TransactionModal'
 
 interface TransactionListProps {
@@ -164,25 +164,25 @@ export function TransactionList({ accountId }: TransactionListProps) {
                   onClick={() => setSelectedTx(tx)}
                   className="flex items-center justify-between p-4 rounded-xl border bg-card text-card-foreground hover:bg-zinc-50 dark:hover:bg-zinc-900 hover:shadow-md transition-all cursor-pointer group"
                 >
-                  <div className="flex items-center gap-4">
+                  <div className="flex items-center gap-4 min-w-0">
                     <div className={`p-2.5 rounded-xl ${
                       isIncome && tx.type !== 'transfer' ? 'bg-emerald-100 text-emerald-600 dark:bg-emerald-900/30 dark:text-emerald-400' :
                       isExpense && tx.type !== 'transfer' ? 'bg-red-100 text-red-600 dark:bg-red-900/30 dark:text-red-400' :
                       'bg-blue-100 text-blue-600 dark:bg-blue-900/30 dark:text-blue-400'
                     } group-hover:scale-110 transition-transform`}>
-                      {tx.type === 'income' && <ArrowUpRight className="h-5 w-5" />}
-                      {tx.type === 'expense' && <ArrowDownRight className="h-5 w-5" />}
+                      {tx.type === 'income' && <ArrowDownLeft className="h-5 w-5" />}
+                      {tx.type === 'expense' && <ArrowUpRight className="h-5 w-5" />}
                       {tx.type === 'transfer' && <ArrowRightLeft className="h-5 w-5" />}
                     </div>
-                    <div>
-                      <p className="font-semibold text-base">
+                    <div className="min-w-0 flex-1">
+                      <p className="font-semibold text-base truncate">
                         {tx.type === 'transfer' 
                           ? tx.account_id === accountId 
                             ? `Transfer to ${tx.transfer_to_account?.name}`
                             : `Transfer from ${tx.accounts?.name}`
                           : tx.notes || tx.categories?.name || 'Uncategorized'}
                       </p>
-                      <p className="text-xs text-muted-foreground mt-0.5">
+                      <p className="text-xs text-muted-foreground mt-0.5 truncate">
                         {new Date(tx.date).toLocaleDateString()} • {tx.type === 'transfer' ? 'Transfer' : tx.categories?.name || 'Other'} {!accountId && `• ${tx.accounts?.name}`}
                       </p>
                     </div>
