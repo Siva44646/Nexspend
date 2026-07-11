@@ -7,6 +7,15 @@ import App from './App.tsx'
 
 import { AuthProvider } from './contexts/AuthContext'
 import { Toaster } from './components/ui/toaster'
+import { registerSW } from 'virtual:pwa-register'
+
+const updateSW = registerSW({
+  onNeedRefresh() {
+    if (confirm('New content available. Reload?')) {
+      updateSW(true)
+    }
+  },
+})
 
 const queryClient = new QueryClient()
 
